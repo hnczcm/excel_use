@@ -3,602 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel 文本处理插件 - 使用教程</title>
+    <title>Office AI 办公助手 - Excel 插件使用教程</title>
     <style>
-        :root {
-            --primary-color: #4285F4; /* 更现代的蓝色 */
-            --secondary-color: #6c757d;
-            --accent-color: #34A853; /* 绿色作为强调色 */
-            --warning-color: #FBBC05; /* 警告色 */
-            --danger-color: #EA4335; /* 危险色 */
-            --light-gray: #f8f9fa;
-            --medium-gray: #e9ecef;
-            --dark-gray: #343a40;
-            --white: #ffffff;
-            --sidebar-width: 260px; /* 稍微加宽侧边栏 */
-            --header-height: 80px;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition-speed: 0.3s;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             line-height: 1.7;
             margin: 0;
             padding: 0;
-            background-color: var(--light-gray);
-            color: var(--dark-gray);
+            background-color: #f8f9fa;
+            color: #212529;
         }
-
-        .main-layout {
-            display: flex;
-            padding-top: var(--header-height);
+        .container {
+            width: 85%;
+            max-width: 1000px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 25px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
-
         header {
-            background: linear-gradient(135deg, var(--primary-color), #5b9eed); /* 渐变背景 */
-            color: var(--white);
-            padding: 15px 30px;
+            background: linear-gradient(to right, #4e73df, #224abe);
+            color: #ffffff;
+            padding: 25px 0;
             text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            height: var(--header-height);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-radius: 8px 8px 0 0;
         }
-
         header h1 {
-            margin: 0 0 5px 0;
-            font-size: 2.2em;
-            font-weight: 600;
-            letter-spacing: 0.5px; /* 增加字母间距 */
-        }
-        
-        header p {
             margin: 0;
-            font-size: 1.1em;
-            opacity: 0.95;
-        }
-
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--white);
-            border-right: 1px solid var(--medium-gray);
-            padding: 25px 0px;
-            height: calc(100vh - var(--header-height));
-            position: fixed;
-            left: 0;
-            top: var(--header-height);
-            overflow-y: auto;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-            transition: all var(--transition-speed) ease;
-        }
-
-        .sidebar nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar nav ul li {
-            margin-bottom: 5px; /* 调整间距 */
-        }
-
-        .sidebar nav ul li a {
-            display: block;
-            padding: 12px 25px;
-            text-decoration: none;
-            color: var(--dark-gray);
+            font-size: 28px;
             font-weight: 500;
-            transition: all var(--transition-speed) ease;
-            border-left: 4px solid transparent;
-            font-size: 1.05em; /* 稍微加大字体 */
         }
-
-        .sidebar nav ul li a:hover {
-            background-color: rgba(66, 133, 244, 0.08); /* 带透明度的蓝色 */
-            color: var(--primary-color);
-            transform: translateX(3px); /* 轻微的移动效果 */
+        nav {
+            background-color: #343a40;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        .sidebar nav ul li a.active {
-            color: var(--primary-color);
-            background-color: rgba(66, 133, 244, 0.15);
-            border-left-color: var(--primary-color);
-            font-weight: 600;
+        nav a {
+            color: #f8f9fa;
+            text-decoration: none;
+            padding: 8px 18px;
+            margin: 0 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
         }
-
-        main.content {
-            flex-grow: 1;
-            padding: 30px 40px;
-            margin-left: var(--sidebar-width);
-            background-color: var(--white);
-            min-height: calc(100vh - var(--header-height));
-            line-height: 1.8; /* 增加行间距 */
+        nav a:hover, nav a.active {
+            background-color: #4e73df;
+            color: #ffffff;
         }
-
-        section {
-            margin-bottom: 50px; /* 增加段落间距 */
-            padding-top: 20px;
-            scroll-margin-top: calc(var(--header-height) + 20px);
-            max-width: 1000px; /* 控制内容宽度，提高可读性 */
-            margin-left: auto;
-            margin-right: auto;
+        h2 {
+            color: #224abe;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 22px;
         }
-
-        section h2 {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-bottom: 25px;
-            color: var(--primary-color);
-            font-size: 2em;
-            font-weight: 600;
-        }
-
-        section h3 {
-            color: #17a2b8;
-            margin-top: 35px;
-            margin-bottom: 15px;
-            font-size: 1.6em;
-            border-left: 4px solid #17a2b8;
-            padding-left: 12px;
-        }
-
-        section h4 {
-            color: var(--secondary-color);
+        h3 {
+            color: #4e73df;
             margin-top: 25px;
-            margin-bottom: 10px;
-            font-size: 1.25em;
-            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #4e73df;
         }
-
-        ul, ol {
+        h4 {
+            color: #2c3e50;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        h5 {
+            color: #34495e;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        p, li {
+            color: #495057;
+            font-size: 15px;
+        }
+        ul {
+            list-style-type: square;
             padding-left: 25px;
         }
-
-        li {
-            margin-bottom: 12px;
-        }
-
-        code {
-            background-color: var(--medium-gray);
-            padding: 0.25em 0.5em;
-            margin: 0;
-            font-size: 90%;
+        code, pre {
+            background-color: #e9ecef;
+            padding: 3px 6px;
             border-radius: 4px;
-            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            color: #c7254e;
-            border: 1px solid #e1e1e8;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
         }
-
         pre {
-            background-color: var(--medium-gray);
             padding: 15px;
-            border-radius: 5px;
             overflow-x: auto;
-            font-size: 90%;
-            border: 1px solid #d1d5da;
+            border: 1px solid #ced4da;
         }
-
-        pre code {
-            background-color: transparent;
-            padding: 0;
-            margin: 0;
-            font-size: inherit;
-            border-radius: 0;
-            border: none;
-            color: var(--dark-gray);
-        }
-
-        .feature-card {
-            border: 1px solid var(--medium-gray);
-            border-radius: 8px;
+        .feature-group {
+            margin-bottom: 25px;
             padding: 20px;
+            background-color: #fdfdff;
+            border: 1px solid #e0e7ff;
+            border-left: 5px solid #4e73df;
+            border-radius: 5px;
+        }
+        .feature-item {
+            margin-bottom: 18px;
+        }
+        .feature-item strong { /* For button/item names */
+            color: #224abe;
+            font-weight: 600;
+        }
+        .tip {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffeeba;
+            padding: 12px 18px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #856404;
+        }
+        .note {
+            background-color: #e2e3e5;
+            border-left: 5px solid #b0b3b8;
+            padding: 12px 18px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #383d41;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
         }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 15px;
         }
-        
-        .feature-card h3 {
-            margin-top: 0;
-            border-left: none;
-            padding-left: 0;
-            color: var(--primary-color);
+        th {
+            background-color: #e9ecef;
+            font-weight: 600;
         }
-
         footer {
             text-align: center;
-            margin-top: 50px;
-            padding: 30px 20px;
-            border-top: 1px solid var(--medium-gray);
-            color: var(--secondary-color);
-            font-size: 0.95em;
-            background-color: var(--white);
-            margin-left: var(--sidebar-width);
+            padding: 25px 0;
+            margin-top: 30px;
+            background-color: #343a40;
+            color: #f8f9fa;
+            border-radius: 0 0 8px 8px;
         }
-
-        footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color var(--transition-speed);
-        }
-        
-        footer a:hover {
-            color: #1a73e8;
-            text-decoration: underline;
-        }
-
-        .btn {
+        .icon-placeholder {
             display: inline-block;
-            padding: 8px 16px;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color var(--transition-speed);
-            font-weight: 500;
-            margin-top: 10px;
-        }
-        
-        .btn:hover {
-            background-color: #1a73e8;
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 992px) {
-            :root {
-                --sidebar-width: 220px;
-            }
-            header h1 { font-size: 2em; }
-            section h2 { font-size: 1.8em; }
-            section h3 { font-size: 1.5em; }
-        }
-
-        @media (max-width: 768px) {
-            :root {
-                --sidebar-width: 0;
-                --header-height: 60px;
-            }
-            .main-layout {
-                padding-top: var(--header-height);
-                display: block;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: static;
-                border-right: none;
-                border-bottom: 1px solid var(--medium-gray);
-                padding: 10px 0;
-                box-shadow: none;
-                z-index: 999;
-            }
-            .sidebar nav ul {
-                display: flex;
-                justify-content: space-around;
-                flex-wrap: wrap;
-            }
-            .sidebar nav ul li a {
-                padding: 8px 15px;
-                border-left: none;
-                border-bottom: 3px solid transparent;
-                text-align: center;
-            }
-            .sidebar nav ul li a.active {
-                border-left: none;
-                border-bottom-color: var(--primary-color);
-                background-color: transparent;
-            }
-            .sidebar nav ul li a:hover {
-                transform: none;
-            }
-            main.content {
-                margin-left: 0;
-                padding: 20px 15px;
-            }
-            footer {
-                margin-left: 0;
-            }
-            header {
-                padding: 10px 20px;
-                height: var(--header-height);
-            }
-            header h1 { font-size: 1.8em; }
-            header p { font-size: 0.9em; }
-            section h2 { font-size: 1.6em; }
-            section h3 { font-size: 1.4em; }
-        }
-
-        @media (max-width: 480px) {
-            header h1 { font-size: 1.6em; }
-            section h2 { font-size: 1.4em; }
-            section h3 { font-size: 1.2em; }
-            main.content { padding: 15px 10px; }
-            .sidebar nav ul li a { padding: 8px 10px; font-size: 0.9em; }
+            width: 16px;
+            height: 16px;
+            background-color: #adb5bd;
+            border-radius: 3px;
+            margin-right: 5px;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Excel 文本处理插件</h1>
-        <p>强大的文本处理工具，提升您的 Excel 操作效率</p>
+        <h1>Office AI 办公助手 - Excel 插件使用教程</h1>
     </header>
+    <nav id="navbar">
+        <a href="#introduction">简介</a>
+        <a href="#installation">安装与卸载</a>
+        <a href="#ribbon-overview">界面概览</a>
+        <a href="#features">功能详述</a>
+        <a href="#version-history">版本历史</a>
+    </nav>
 
-    <div class="main-layout">
-        <aside class="sidebar">
-            <nav>
+    <div class="container">
+        <section id="introduction">
+            <h2><span class="icon-placeholder"></span>插件简介</h2>
+            <p>Office AI 办公助手是一款为 Microsoft Excel 设计的VSTO外接程序，旨在通过提供一系列强大的文本处理、数值计算、单元格操作、工作表及工作簿管理等智能化功能，极大地提升用户处理表格数据的效率和便捷性。无论是日常办公还是专业数据分析，本插件都能助您一臂之力。</p>
+            <p>近期版本特别增强了其内部的撤销机制，现在能够更精确地处理涉及合并单元格的操作回滚。</p>
+        </section>
+
+        
+
+        <section id="ribbon-overview">
+            <h2><span class="icon-placeholder"></span>界面概览</h2>
+            <p>安装成功后，您会在 Excel 的功能区 (Ribbon) 中看到一个新的选项卡，名为 <strong>“OfficeAI办公助手”</strong>。</p>
+            <p>该选项卡包含了插件的所有功能，这些功能被划分为以下几个主要的功能组：</p>
+            <ul>
+                <li><strong>文本处理</strong>：基础的字符提取与过滤。</li>
+                <li><strong>高级文本处理</strong>：大小写转换、空格删除等。</li>
+                <li><strong>快速录入</strong>：针对姓名、身份证、手机号的快捷处理工具。</li>
+                <li><strong>数值处理</strong>：数值转换、舍入、常用单位、金额处理等。</li>
+                <li><strong>单元格</strong>：单元格内容的合并、拆分，行列转换。</li>
+                <li><strong>工作表</strong>：工作表的合并、汇总与拆分。</li>
+                <li><strong>视图</strong>：提供如聚光灯等辅助查看功能。</li>
+                <li><strong>其他</strong>：包含使用教程链接等。</li>
+            </ul>
+            <img src="placeholder_ribbon_overview.png" alt="插件功能区概览图（请替换为实际截图）" style="width:100%; max-width:800px; border:1px solid #ccc; margin-top:10px;">
+            <p class="note">上图为功能区示意图，请您后续替换为插件的实际截图以获得最佳效果。</p>
+        </section>
+
+        <section id="features">
+            <h2><span class="icon-placeholder"></span>功能详述</h2>
+            <p>以下将详细介绍“OfficeAI办公助手”选项卡中各功能组的具体功能和使用方法。</p>
+
+            <!-- 文本处理 Group -->
+            <div class="feature-group">
+                <h3>文本处理</h3>
+                <p>此功能组主要用于对选定单元格内容进行基础的字符提取和过滤操作。</p>
+                <h4>选项 (复选框):</h4>
                 <ul>
-                    <li><a href="#intro" class="active">简介</a></li>
-                    <li><a href="#features">功能概览</a></li>
-                    <li><a href="#usage">使用说明</a></li>
-                    <li><a href="#usage-basic">基础文本处理</a></li>
-                    <li><a href="#usage-advanced">高级文本处理</a></li>
-                    <li><a href="#usage-numeric">数值处理</a></li>
-                    <li><a href="#usage-format">格式处理</a></li>
-                    <li><a href="#usage-idcard">身份证号工具</a></li>
-                    <li><a href="#usage-split">整行拆分工具</a></li>
+                    <li><strong>空格</strong>: 选择是否处理空格字符。</li>
+                    <li><strong>符号</strong>: 选择是否处理各种符号。</li>
+                    <li><strong>中文</strong>: 选择是否处理中文字符。</li>
+                    <li><strong>英文</strong>: 选择是否处理英文字母。</li>
+                    <li><strong>数字</strong>: 选择是否处理数字字符。</li>
                 </ul>
-            </nav>
-        </aside>
-
-        <main class="content">
-            <section id="intro">
-                <h2>简介</h2>
-                <div class="feature-card">
-                    <p>Excel 文本处理插件是一款集成于 Excel 的强大工具，提供了丰富的文本和数值处理功能，帮助用户轻松高效地处理 Excel 单元格中的各类内容。</p>
-                    <p>无论您是数据分析师、办公室工作人员，还是 Excel 爱好者，本插件都能让您的数据处理工作更加轻松、高效。</p>
-                    <p>本教程将帮助您快速熟悉并掌握插件的各项功能，提升数据处理效率。</p>
-                    <a href="README.md" class="btn">查看详细说明文档</a>
+                <h4>执行动作 (下拉执行按钮):</h4>
+                <div class="feature-item">
+                    <strong>提取</strong>
+                    <p>根据上方勾选的字符类型，保留选定单元格中这些类型的字符，其余字符将被删除。</p>
+                    <p class="tip">例如：原文案“一二AB37”，勾选“中文”，提取后变为“一二”。</p>
                 </div>
-            </section>
-
-            <section id="features">
-                <h2>功能概览</h2>
-                <p>插件主要包含以下几大类功能，点击侧边栏的对应链接查看具体操作方法：</p>
-
-                <div class="feature-card">
-                    <h3>1. 基础文本处理</h3>
-                    <ul>
-                        <li><strong>字符提取</strong>：按类型保留指定字符</li>
-                        <li><strong>字符过滤</strong>：按类型移除指定字符</li>
-                    </ul>
+                <div class="feature-item">
+                    <strong>过滤</strong>
+                    <p>根据上方勾选的字符类型，删除选定单元格中这些类型的字符，其余字符将被保留。</p>
+                    <p class="tip">例如：原文案“一二AB37”，勾选“中文”，过滤后变为“AB37”。</p>
                 </div>
+            </div>
 
-                <div class="feature-card">
-                    <h3>2. 高级文本处理</h3>
-                    <ul>
-                        <li><strong>正则提取/替换</strong>：使用正则表达式进行复杂匹配操作</li>
-                        <li><strong>文本拆分</strong>：按分隔符拆分到多单元格</li>
-                        <li><strong>格式转换</strong>：大小写、全半角、空格、不可见字符等</li>
-                        <li><strong>姓名处理</strong>：掩码、提取姓/名、加空格</li>
-                        <li><strong>手机号处理</strong>：分段格式化、掩码</li>
-                        <li><strong>中文数字转换</strong>：阿拉伯数字与中文（普通/大写）互转</li>
-                    </ul>
-                </div>
+            <!-- 高级文本处理 Group -->
+            <div class="feature-group">
+                <h3>高级文本处理</h3>
+                <p>提供更复杂的文本格式化和清理功能。</p>
+                <h4>大小写 (功能组):</h4>
+                <ul>
+                    <li><strong>全部大写</strong>: 将选定单元格中的英文字符全部转换为大写。</li>
+                    <li><strong>全部小写</strong>: 将选定单元格中的英文字符全部转换为小写。</li>
+                    <li><strong>单词首字母大写</strong>: 将每个英文单词的首字母转为大写，其余字母小写。</li>
+                    <li><strong>句首字母大写</strong>: 以英文句号为界，每句英文的首字母转为大写，其余字母小写。</li>
+                    <li><strong>大小写反转</strong>: 选定单元格中的英文字符，大写转小写，小写转大写。</li>
+                </ul>
+                <h4>删除空格 (功能组):</h4>
+                <ul>
+                    <li><strong>删除开头的空格</strong>: 删除选定单元格内容开头的空格。</li>
+                    <li><strong>删除所有的空格</strong>: 删除选定单元格内容中所有的空格。</li>
+                    <li><strong>删除末尾的空格</strong>: 删除选定单元格内容末尾的空格。</li>
+                    <li><strong>删除不可见字符</strong>: 打开对话框，允许用户选择是否在删除不可见字符（如制表符、换行符等）的同时也删除空格。</li>
+                </ul>
+            </div>
 
-                <div class="feature-card">
-                    <h3>3. 数值处理</h3>
-                    <ul>
-                        <li><strong>小数处理</strong>：取整、取小数</li>
-                        <li><strong>分数小数互转</strong>：精确转换</li>
-                        <li><strong>引用转换</strong>：相对/绝对引用互转</li>
-                        <li><strong>数值舍入</strong>：多种舍入模式</li>
-                        <li><strong>单位转换</strong>：添加/转换"万"单位</li>
-                        <li><strong>金额转大写</strong>：转为中文大写金额</li>
-                    </ul>
-                </div>
+            <!-- 快速录入 Group -->
+            <div class="feature-group">
+                <h3>快速录入</h3>
+                <p>针对特定数据类型如姓名、身份证号、手机号提供快捷处理和生成工具。</p>
+                <h4>姓名 (功能组):</h4>
+                <ul>
+                    <li><strong>姓名部分变量</strong>: 打开“姓名变星号”对话框，可将姓名中的姓氏或名字替换为星号，保护隐私。</li>
+                    <li><strong>姓名提取</strong>: 打开“姓名提取”对话框，可分别提取姓氏和名字到指定单元格。</li>
+                    <li><strong>姓名加空格</strong>: 打开“姓名加空格”对话框，可在姓氏和名字间（或根据名字长度）添加指定数量的空格。</li>
+                </ul>
+                <h4>身份证 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>输入身份证号</strong>: 打开“输入身份证号”对话框，可验证并快速输入身份证号到选中单元格，同时提取基本信息（出生日期、年龄、性别）。</li>
+                    <li><strong>身份证部分变星号</strong>: 打开“身份证号码掩码处理”对话框，提供多种掩码模式保护身份证号敏感信息。</li>
+                    <li><strong>校验证件号</strong>: 打开“身份证信息提取与校验”窗体，用于验证身份证号码的合法性。</li>
+                    <li><strong>提取性别</strong>: 从身份证号中提取性别信息。</li>
+                    <li><strong>提取出生日期</strong>: 从身份证号中提取出生日期。</li>
+                    <li><strong>提取年龄</strong>: 根据身份证号计算当前年龄。</li>
+                    <li><strong>提取地址（省市县）</strong>: 从身份证号中提取行政区划信息。</li>
+                    <li><strong>提取邮编</strong>: 根据身份证号中的地址信息关联可能的邮政编码（此功能依赖数据支持）。</li>
+                    <li><strong>提取区号</strong>: 根据身份证号中的地址信息关联可能的电话区号（此功能依赖数据支持）。</li>
+                </ul>
+                <h4>手机号 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>分段显示</strong>: 将11位手机号（如15484962760）转换为分段格式（如154-8496-2760）。</li>
+                    <li><strong>手机号部分变星号</strong>: 将手机号中间四位替换为星号（如154****2760）。</li>
+                    <li><strong>随机生成手机/电话号</strong>: 打开“生成号码”对话框，用于生成模拟的手机或电话号码。</li>
+                </ul>
+            </div>
 
-                <div class="feature-card">
-                    <h3>4. 单元格合并与拆分</h3>
-                    <ul>
-                        <li><strong>文本合并</strong>：多种方式合并内容并物理合并单元格</li>
-                        <li><strong>相同内容合并</strong>：自动合并相邻相同单元格</li>
-                        <li><strong>条件列合并</strong>：按条件列分组合并</li>
-                        <li><strong>整行拆分</strong>：按单列数据拆分整行</li>
-                    </ul>
-                </div>
+            <!-- 数值处理 Group -->
+            <div class="feature-group">
+                <h3>数值处理</h3>
+                <p>提供多种数值格式转换、计算和单位处理功能。</p>
+                <h4>数值转换 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>中文-数字转换</strong>: 打开“中文数字与阿拉伯数字互转”对话框，支持阿拉伯数字与中文普通、大写数字间的相互转换，可输出到新位置。</li>
+                    <li><strong>小数-分数转换</strong>: 打开“小数与分数互转”对话框，支持小数与多种格式分数间的相互转换。</li>
+                    <li><strong>相对-绝对引用转换</strong>: 打开“单元格引用转换”对话框，支持单元格地址的相对引用与绝对引用（及混合引用）之间的相互转换。</li>
+                </ul>
+                <h4>四舍五入 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>向上舍入</strong>: 打开“数值舍入”对话框，按指定小数位数向上舍入（进一法）。</li>
+                    <li><strong>向下舍入</strong>: 打开“数值舍入”对话框，按指定小数位数向下舍入（舍去法）。</li>
+                    <li><strong>四舍五入</strong>: 打开“数值舍入”对话框，按指定小数位数进行四舍五入。</li>
+                    <li><strong>四舍六入五成双</strong>: 打开“数值舍入”对话框，采用银行家舍入法。</li>
+                    <li><strong>取整数</strong>: 保留数值的整数部分。</li>
+                    <li><strong>取小数</strong>: 保留数值的小数部分。</li>
+                </ul>
+                <h4>常用单位 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>万</strong>: 打开“万单位处理”对话框，可将数值转换为万单位或添加万单位后缀。</li>
+                    <li><strong>㎡</strong>: 打开“常用单位”对话框，处理平方米单位（具体功能待补充）。</li>
+                    <li><strong>千分符,</strong>: 打开“常用单位”对话框，为数值添加或移除千分位分隔符。</li>
+                    <li><strong>元</strong>: 打开“常用单位”对话框，处理元单位（具体功能待补充）。</li>
+                    <li><strong>金额转大写壹贰叁</strong>: 将选定单元格的数字金额转换为标准中文大写金额表示法。</li>
+                </ul>
+                <h4>保留数值 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>数值格式</strong>: 保留单元格原值，并根据数值特点智能设置合适的数字格式（如常规、百分比等），同时保留原有单元格样式。</li>
+                    <li><strong>文本格式</strong>: 保留单元格原值（即使是数字），并将其格式设置为文本格式(@)，同时保留原有单元格样式。</li>
+                </ul>
+            </div>
 
-                <div class="feature-card">
-                    <h3>5. 格式处理</h3>
-                    <ul>
-                        <li><strong>保留原值与样式</strong>：修改值和数字格式，保留字体/颜色等</li>
-                    </ul>
-                </div>
+            <!-- 单元格 Group -->
+            <div class="feature-group">
+                <h3>单元格</h3>
+                <p>提供单元格内容的合并、拆分以及行列结构转换功能。</p>
+                <h4>合并 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>合并且保留所有内容</strong>: 打开“合并内容”对话框。支持多种合并方式（全部合并、逐行、逐列），可设置分隔符、合并顺序，结果直接覆盖源区域，并物理合并单元格。支持将已合并单元格取消合并并按规则拆分内容。</li>
+                    <li><strong>合并相同单元格</strong>: 打开“合并单元格”对话框（默认标签页1）。自动识别并合并相邻单元格中内容相同的区域（可按行或列）。</li>
+                    <li><strong>取消合并相同单元格</strong>: 打开“取消合并单元格”对话框，用于拆分之前通过“合并相同单元格”功能合并的区域。</li>
+                    <li><strong>合并空值</strong>: 打开“合并空值单元格”对话框（具体功能待补充）。</li>
+                    <li><strong>按条件合并</strong>: 打开“合并单元格”对话框（标签页2）。根据指定条件列的值对数据进行分组合并。</li>
+                </ul>
+                <h4>拆分 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>整行拆分</strong>: 打开“整行拆分工具”对话框。根据单列的数据（数值、比例、生成编号）拆分整行数据为多行，结果保存到新工作表。</li>
+                    <li><strong>区域拆分</strong>: 打开“区域拆分”对话框（具体功能待补充）。</li>
+                </ul>
+                <h4>行列转换 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>行列转换</strong>: 打开“行列转换”对话框。支持将选定区域数据转换为多行、多列、单行或单列格式，可指定读写顺序和空白处理方式。</li>
+                    <li><strong>行列倒置</strong>: 打开“行列倒置”对话框（具体功能待补充，通常指转置）。</li>
+                </ul>
+            </div>
 
-                <div class="feature-card">
-                    <h3>6. 身份证号工具</h3>
-                    <ul>
-                        <li><strong>验证与输入</strong>：实时验证、信息提取、一键输入</li>
-                        <li><strong>掩码处理</strong>：多种模式保护隐私</li>
-                        <li><strong>信息提取</strong>：提取生日、年龄、性别、地址等</li>
-                    </ul>
-                </div>
-            </section>
+            <!-- 工作表 Group -->
+            <div class="feature-group">
+                <h3>工作表</h3>
+                <p>提供对工作表和工作簿的合并、汇总与拆分功能。</p>
+                <h4>合并 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>合并两表</strong>: 打开“合并两表数据”对话框（具体功能待补充）。</li>
+                    <li><strong>合并多表</strong>: 打开“合并工作表”对话框。智能合并当前工作簿中选定的多个工作表数据到新表，支持表头处理和来源标识。</li>
+                    <li><strong>合并多簿工作表</strong>: 打开“合并工作簿”对话框。智能合并多个打开的Excel工作簿中的工作表（可筛选）到一个全新的工作簿，或合并其内容到新表。</li>
+                </ul>
+                <h4>汇总 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>汇总多表</strong>: 打开“汇总多个工作表”对话框。根据指定单元格区域和选择的工作表，进行求和、平均数、计数等汇总操作，结果输出到新表。</li>
+                </ul>
+                <h4>拆分 (下拉按钮组):</h4>
+                <ul>
+                    <li><strong>拆分工作表</strong>: 打开“拆分工作表”对话框。可根据关键列或固定行数将当前工作表数据拆分到新工作表（可选择在当前簿或新簿）。</li>
+                    <li><strong>拆分工作表（按打印页）</strong>: 打开“按打印分页拆分”对话框（具体功能待补充）。</li>
+                    <li><strong>拆分工作表（拆分为独立工作簿）</strong>: 打开“独立拆分各表”对话框。将当前工作簿中选定的每个工作表拆分为一个独立的Excel文件。</li>
+                    <li><strong>拆分工作簿</strong>: 打开“拆分工作簿”对话框。提供两种拆分模式：
+                        <ol>
+                            <li>将当前工作簿中勾选的工作表分别拆分为独立的Excel文件（.xlsx 或 .xls），可选择是否包含隐藏/空白表、只保留数值、删除外部链接。</li>
+                            <li>根据设定条件（如按工作表个数、表名包含特定字符、遇到特定表名时分割）将当前活动工作簿的多个工作表组合成新的工作簿文件。</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
 
-            <section id="usage">
-                <h2>使用说明</h2>
-                <p>以下是各项功能的详细使用步骤，按照这些指引，您可以快速上手我们的 Excel 文本处理插件：</p>
+            <!-- 视图 Group -->
+            <div class="feature-group">
+                <h3>视图</h3>
+                <p>提供辅助查看和操作的功能。</p>
+                <h4>聚光灯 (功能组):</h4>
+                <ul>
+                    <li><strong>开启/关闭</strong>: 切换聚光灯效果的开关状态。开启后，鼠标所在行和/或列会高亮显示。</li>
+                    <li><strong>设置</strong>: 打开“聚光灯设置”对话框，用户可以自定义聚光灯的颜色、透明度、高亮范围（行、列、十字）等。</li>
+                </ul>
+            </div>
+            
+            <!-- 其他 Group -->
+            <div class="feature-group">
+                <h3>其他</h3>
+                <p>包含插件的辅助信息和一些特殊工具。</p>
+                <ul>
+                    <li><strong>使用教程</strong>: 点击此按钮会尝试在浏览器中打开插件的在线使用教程页面。</li>
+                    <li><strong>导出格式</strong>: 打开“导出单元格内容”对话框。允许用户将Excel中选中的单元格内容（地址和值）导出到窗体的文本框中，便于查看或复制。</li>
+                </ul>
+            </div>
 
-                <div class="feature-card">
-                    <h3 id="usage-basic">基础文本处理 (字符提取/过滤)</h3>
-                    <ol>
-                        <li>在 Excel 中选中您想要处理的一个或多个单元格区域。</li>
-                        <li>在插件功能区的"基础文本处理"组中，勾选您希望<strong>提取</strong>（保留）或<strong>过滤</strong>（移除）的字符类型复选框（如：空格、符号、英文、中文、数字）。</li>
-                        <li>点击<code>提取字符</code>或<code>过滤字符</code>按钮。</li>
-                        <li>根据弹出的提示框，选择一个单元格作为存放处理结果的起始位置。</li>
-                        <li>点击"确定"后，处理结果将显示在您选择的目标区域。</li>
-                    </ol>
-                </div>
+        </section>
 
-                <div class="feature-card">
-                    <h3 id="usage-advanced">高级文本处理</h3>
-                    <p>大部分高级文本处理功能会直接修改您选中的单元格，操作更便捷。</p>
-                    <h4>通用步骤</h4>
-                    <ol>
-                        <li>选择要处理的单元格区域。</li>
-                        <li>点击功能区"高级文本处理"或"姓名处理"等分组中对应的按钮。</li>
-                        <li><strong>如果弹出设置窗口</strong>: 根据窗口提示完成设置（如选择模式、输入参数等），然后点击"执行"或"确定"。</li>
-                        <li><strong>如果无设置窗口</strong>: 功能将直接应用到选中单元格。</li>
-                        <li>操作完成后通常会弹出消息框，告知处理结果（成功数量、失败数量等）。</li>
-                    </ol>
-
-                    <h4>特定功能说明</h4>
-                    <ul>
-                        <li><strong>文本合并 (<code>文本合并</code>按钮)</strong>: 选择区域后，在弹出窗口中设置合并方式（全部/逐行/逐列）、分隔符等，结果将覆盖源区域并物理合并单元格。</li>
-                        <li><strong>相同内容合并 (<code>合并相同内容</code>按钮)</strong>: 选择区域后，在弹出窗口中选择合并方向（按列/按行），系统会自动合并相邻相同项。</li>
-                        <li><strong>条件列合并 (<code>按条件列合并</code>按钮)</strong>: 需要分别选择"条件区域"（单列）和"待合并区域"（可多列），系统会根据条件列的值对后者进行合并。</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3 id="usage-numeric">数值处理</h3>
-                    <p>数值处理功能通常也直接作用于选中单元格。</p>
-                    <h4>通用步骤</h4>
-                    <ol>
-                        <li>选择包含数值的单元格区域。</li>
-                        <li>点击功能区"数值处理"分组中对应的按钮（如<code>只保留整数</code>、<code>四舍五入</code>等）。</li>
-                        <li><strong>如果弹出设置窗口</strong>: 根据提示进行设置（如舍入位数、转换模式等），然后点击"确定"。</li>
-                        <li><strong>如果无设置窗口</strong>: 功能将直接应用。</li>
-                        <li>查看消息框反馈的处理结果。</li>
-                    </ol>
-                    <h4>特定功能说明</h4>
-                    <ul>
-                        <li><strong>分数与小数转换 (<code>分数小数转换</code>按钮)</strong>: 弹出窗口，选择转换类型（分数→小数 / 小数→分数）后确定。</li>
-                        <li><strong>相对绝对值转换 (<code>相对绝对值转换</code>按钮)</strong>: 弹出窗口，选择转换类型（相对→绝对 / 绝对→相对）后确定。会处理单元格值或公式中的引用。</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3 id="usage-format">单元格格式处理 (保留原值)</h3>
-                    <ol>
-                        <li>选择要处理的单元格区域。</li>
-                        <li>点击功能区"格式处理"分组中的<code>保留数值</code>、<code>保留文本</code>或<code>数值转文本</code>按钮。</li>
-                        <li>插件会修改单元格的值和数字格式（NumberFormat），但会尽力保留原有的其他样式（如字体、颜色、边框等）。</li>
-                    </ol>
-                </div>
-
-                <div class="feature-card">
-                    <h3 id="usage-idcard">身份证号处理工具</h3>
-                    <ol>
-                        <li><strong>输入 (<code>身份证输入</code>按钮)</strong>: 打开输入窗口，输入18位号码。窗口会实时验证并显示生日、年龄、性别。点击<code>输入到单元格</code>可将号码填入当前选中的Excel单元格。</li>
-                        <li><strong>掩码 (<code>身份证变星号</code>按钮)</strong>: 选择包含身份证号的区域，点击按钮。在弹出窗口中选择一种掩码模式（如隐藏生日、显示前4位等），点击"确定"。</li>
-                        <li><strong>信息提取 (<code>提取性别</code>、<code>提取年龄</code>等按钮)</strong>: 选择包含身份证号的区域，点击相应提取按钮。弹出窗口通常已预选对应提取项，确认后点击"确定"，结果会输出到新列或指定位置。</li>
-                    </ol>
-                </div>
-
-                <div class="feature-card">
-                    <h3 id="usage-split">整行拆分工具</h3>
-                    <ol>
-                        <li>选择包含拆分依据数字的<strong>单列</strong>数据区域（例如，数量列）。</li>
-                        <li>点击功能区"单元格合并与拆分"分组中的<code>整行拆分</code>按钮。</li>
-                        <li>在弹出窗口中：
-                            <ul>
-                                <li>选择<strong>拆分方式</strong>（按数值、按比例、生成递增编号）。如果选"按比例"，需输入比例值。</li>
-                                <li>选择<strong>数据处理方式</strong>（保持原值 / 仅原始行保留值）。</li>
-                            </ul>
-                        </li>
-                        <li>点击"执行"。插件会创建一个名为"整行拆分结果"的新工作簿，并将拆分后的数据放入其中。</li>
-                    </ol>
-                </div>
-            </section>
-
-            <!-- Version History Section Removed -->
-
-        </main>
+        <section id="version-history">
+            <h2><span class="icon-placeholder"></span>版本历史</h2>
+            <p>详细的版本更新历史和功能改进，请参考项目根目录下的 <code>version.md</code> 文件。</p>
+            <p>您也可以访问 <a href="version.md" target="_blank">version.md（如果此HTML文件与version.md在同一目录且可访问）</a> 查看。</p>
+            <div class="note">
+                <strong>最近重要更新 (示例，请根据实际version.md填写):</strong>
+                <ul>
+                    <li><strong>版本 1.5.10 (示例):</strong> 增强了撤销功能，支持正确恢复合并单元格的原始状态。</li>
+                    <li><strong>版本 1.5.9 (示例):</strong> 增强了工作表拆分窗体，包括自动读取列名、互斥选择、多种拆分模式（按关键列、固定行数）等。</li>
+                    <li>...更多详情请查阅 <code>version.md</code>。</li>
+                </ul>
+            </div>
+        </section>
     </div>
 
     <footer>
-        <p>&copy; 2024 Excel 文本处理插件. All Rights Reserved.</p>
-        <p>了解更多产品信息请查看: <a href="README.md">完整功能说明</a> | <a href="version.md">版本更新历史</a></p>
-        <p>我们的 Office AI 助手插件为您提供更多智能化的办公体验</p>
+        <p>&copy; Office AI 办公助手开发团队 - 最后更新日期：<span id="updateDate"></span></p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.sidebar nav ul li a');
-            const sections = document.querySelectorAll('main.content section, main.content .feature-card');
-            const headerHeight = document.querySelector('header').offsetHeight;
-            const sidebar = document.querySelector('.sidebar');
+        // Simple script to update footer date and handle active nav link
+        document.getElementById('updateDate').textContent = new Date().toLocaleDateString('zh-CN');
 
-            // 平滑滚动
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        // 根据侧边栏是固定的还是静态的调整偏移量
-                        const isSidebarStatic = window.getComputedStyle(sidebar).position === 'static';
-                        const extraOffset = isSidebarStatic ? 10 : 20; // 为固定头部添加更多偏移量
-                        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - extraOffset;
+        window.addEventListener('scroll', function() {
+            let sections = document.querySelectorAll('section');
+            let navLinks = document.querySelectorAll('nav a');
+            sections.forEach(section => {
+                let top = window.scrollY;
+                let offset = section.offsetTop - 150; // Adjust offset as needed
+                let height = section.offsetHeight;
+                let id = section.getAttribute('id');
 
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-
-                        // 针对移动视图中侧边栏变为静态导航的情况
-                        if (isSidebarStatic) {
-                            navLinks.forEach(l => l.classList.remove('active'));
-                            this.classList.add('active');
+                if (top >= offset && top < offset + height) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') == '#' + id) {
+                            link.classList.add('active');
                         }
-                    }
-                });
-            });
-
-            // 滚动时激活导航状态
-            function setActiveLink() {
-                let currentSectionId = '';
-                const scrollPosition = window.scrollY + headerHeight + 50; // 调整阈值
-
-                sections.forEach( section => {
-                    const sectionTop = section.offsetTop;
-                    if (scrollPosition >= sectionTop) {
-                        const id = section.getAttribute('id');
-                        if (id) currentSectionId = id;
-                    }
-                });
-
-                // 处理页面顶部的边缘情况
-                if (window.scrollY < sections[0].offsetTop - headerHeight - 50) {
-                    currentSectionId = sections[0].getAttribute('id');
+                    });
                 }
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').substring(1) === currentSectionId) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-
-            // 初始调用并绑定滚动事件
-            setActiveLink();
-            window.addEventListener('scroll', setActiveLink);
-            
-            // 为特性卡片添加动画效果
-            const featureCards = document.querySelectorAll('.feature-card');
-            featureCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                    this.style.boxShadow = '0 10px 15px rgba(0, 0, 0, 0.1)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-                });
             });
         });
     </script>
